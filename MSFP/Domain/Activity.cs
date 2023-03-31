@@ -29,5 +29,6 @@ namespace Domain
         public Guid? OrganizationId { get; set; }
         public Organization Organization { get; set; }
          public bool MFP { get; set; }
+        public string EducationalCategory { get; set; }
     }
 }

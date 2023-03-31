@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using Application.Activities;
+using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -7,16 +9,20 @@ namespace API.Controllers
 {
     public class ActivitiesController : BaseAPIController
     {
-        private readonly DataContext _context;
-
-        public ActivitiesController(DataContext context)
-        {
-            _context = context;
+        private readonly IMediator _mediator;
+        public ActivitiesController(IMediator mediator) { 
+            _mediator = mediator;
         }
+
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<ActionResult<List<Activity>>> GetActivities() => await _mediator.Send(new List.Query());
+
+        [HttpGet("geEventsByDate")]
+        public async Task<ActionResult<List<FullCalendarEventDTO>>>GeEventsByDate()
         {
-            return await _context.Activities.Include(x => x.Organization).Where(x => x.MFP).ToListAsync();
+            string start = Request.Query["start"];
+            string end = Request.Query["end"];
+            return await _mediator.Send(new GetEventsByDate.Query { Start = start, End = end });
         }
 
     }
