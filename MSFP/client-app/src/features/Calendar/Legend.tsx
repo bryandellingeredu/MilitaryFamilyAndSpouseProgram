@@ -18,7 +18,7 @@ export function Legend () {
     return(
         <>
         {legend.map(item => (
-            <Label size='tiny' key={item.name} 
+            <Label  key={item.name} 
             style={{backgroundColor: item.color, color: 'white', marginBottom: '5px'}}
             content={item.name}
             />

@@ -5,6 +5,7 @@ import { EventClickArg } from "@fullcalendar/core";
 import { useStore } from "../../app/stores/store";
 import { Details } from "../../app/models/Details";
 import EventDetails from "./EventDetails";
+import { Loader } from "semantic-ui-react";
 
 export default function MobileCalendar() {
   const {commonStore} = useStore();
@@ -14,9 +15,9 @@ export default function MobileCalendar() {
     const handleButtonClick = () => {
       setShowDetails(false);
     };
-
+    const [isLoading, setIsLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const [details, setDetails] = useState<Details>({title: '', description: '', location: '', duration: '', category: ''})
+    const [details, setDetails] = useState<Details>({title: '', description: '', location: '', duration: '', category: '', allDayEvent: false, start: new Date(), end: new Date()})
     const handleEventClick = (clickInfo: EventClickArg) => {
       setShowDetails(true);
       console.log(clickInfo.event);
@@ -25,7 +26,10 @@ export default function MobileCalendar() {
         description: clickInfo.event.extendedProps.description,
         location:  clickInfo.event.extendedProps.primaryLocation,
         duration: getDuration(clickInfo.event.startStr, clickInfo.event.endStr, clickInfo.event.allDay),
-        category: clickInfo.event.extendedProps.educationalCategory})
+        category: clickInfo.event.extendedProps.educationalCategory,
+        allDayEvent: clickInfo.event.allDay,
+        start: clickInfo.event.start ? clickInfo.event.start : new Date() ,
+        end: clickInfo.event.end ? clickInfo.event.end : new Date()})
     } 
 
      const handleDatesSet = () => {
@@ -34,7 +38,13 @@ export default function MobileCalendar() {
 
     return (
       <>
+         {isLoading && (
+         <Loader active size='large' style={{marginTop: '100px'}}>
+           Loading events...
+         </Loader>
+        )}
     <FullCalendar
+      loading={(isLoading) => setIsLoading(isLoading)}
       ref={calendarRef}
       plugins={[listPlugin]}
       events={`${process.env.REACT_APP_API_URL}/Activities/geEventsByDate`}

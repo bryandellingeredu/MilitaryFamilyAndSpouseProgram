@@ -30,5 +30,6 @@ namespace Domain
         public Organization Organization { get; set; }
          public bool MFP { get; set; }
         public string EducationalCategory { get; set; }
+        public bool LogicalDeleteInd {get; set;}
     }
 }

@@ -18,7 +18,7 @@ namespace Application.Activities
             }
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.Include(x => x.Organization).Where(x => x.MFP).ToListAsync();
+                return await _context.Activities.Include(x => x.Organization).Where(x => x.MFP).Where(x => !x.LogicalDeleteInd).ToListAsync();
             }
         }
     }

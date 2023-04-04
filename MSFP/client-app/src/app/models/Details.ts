@@ -4,4 +4,7 @@ export interface Details{
     location: string;
     duration: string;
     category: string;
+    allDayEvent: boolean,
+    start: Date,
+    end: Date,
 }

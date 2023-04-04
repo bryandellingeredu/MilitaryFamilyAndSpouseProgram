@@ -33,9 +33,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors("CorsPolicy");
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.MapControllers();
+app.MapFallbackToController("Index","Fallback");
+
 app.UseHttpsRedirection();
 
-app.MapControllers();
 
 app.Run();

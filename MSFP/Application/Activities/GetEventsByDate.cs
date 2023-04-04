@@ -41,6 +41,7 @@ namespace Application.Activities
                 DateTime start = GetDateTimeFromRequest(request.Start);
                 DateTime end = GetDateTimeFromRequest(request.End);
                 var activities = await _context.Activities .Include(x => x.Organization).Where(x => x.MFP)
+                      .Where(x => !x.LogicalDeleteInd)
                       .Where(
                                          x =>
                                             (x.Start <= start && x.End <= end) ||
